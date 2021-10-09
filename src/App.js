@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import data from './data.json';
+import "react-datetime/css/react-datetime.css";
+import Datetime from "react-datetime";
+import moment from "moment";
 
 function App() {
   const [country, setCountry] = useState(null);
@@ -26,7 +29,12 @@ function App() {
       setLink("both the fields are selected")
     }
   }, [country, lang]);
-
+  var yesterday = moment().subtract(1, "day");
+  function valid(current) {
+    return (
+      current.day() !== 0 && current.day() !== 6 && current.isAfter(yesterday)
+    );
+  }
   return (
     <div className="App">
       <h3>Cascading dropdown in React</h3>
@@ -52,6 +60,10 @@ function App() {
         />
       </div>
       <span><b>message:</b> {country && lang ? link : '-'}</span>
+
+      <h3>React datetime library used here</h3>
+      <h3>Disabling previous and weekends using moment and datetime</h3>
+      <Datetime isValidDate={valid} />;
     </div>
   );
 }
